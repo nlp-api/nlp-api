@@ -63,3 +63,6 @@ def demo_vader_instance(text):
     """
     vader_analyzer = SentimentIntensityAnalyzer()
     print(vader_analyzer.polarity_scores(text))
+
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0')
