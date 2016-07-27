@@ -1,5 +1,5 @@
 from flask import Flask, request
-from sentiment import Sentiment
+from .sentiment import Sentiment
 
 app = Flask(__name__)
 
