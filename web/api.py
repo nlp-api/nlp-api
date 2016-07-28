@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from .sentiment import Sentiment
 
 app = Flask(__name__)
@@ -10,22 +10,18 @@ def hello_world():
 @app.route('/api/sentiment', methods=['GET', 'POST'])
 def api():
     if request.method == 'GET':
-        print(Sentiment.demo_liu_hu_lexicon('This is a nice car.'))
-        print(Sentiment.demo_liu_hu_lexicon('This is a terrible car.'))
-        print(Sentiment.demo_vader_instance('This is a nice car.'))
-        print(Sentiment.demo_vader_instance('This is a terrible car.'))
-        return 'print'
+        return jsonify(text='This is how you should format your POST data.')
     if request.method == 'POST':
         try:
             f = request.get_json()
         except Exception as e:
-            # Should log this error
+            # Should log this error maybe?
             print(e)
             return not_acceptable()
         else:
-            # Do stuff with json
-            print(f)
-            return 'hi'
+            for text in f:
+                print(f[text])
+                return jsonify(Sentiment.demo_vader_instance(f[text]))
 
 
 @app.errorhandler(404)
@@ -43,7 +39,7 @@ def not_found(error=None):
 def not_acceptable(error=None):
     message = {
             'status': 406,
-            'message': 'Could not parse json, check formatting:' + request.url,
+            'message': 'Could not parse json, check formatting: ' + request.url,
     }
     resp = jsonify(message)
     resp.status_code = 406
