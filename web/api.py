@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from .sentiment import Sentiment
 
+
 app = Flask(__name__)
 
 @app.route('/')
