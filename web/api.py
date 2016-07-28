@@ -18,7 +18,7 @@ def api():
         except Exception as e:
             # Should log this error maybe?
             print(e)
-            return not_acceptable()
+            return bad_request()
         else:
             for text in f:
                 print(f[text])
@@ -33,18 +33,16 @@ def not_found(error=None):
     }
     resp = jsonify(message)
     resp.status_code = 404
-
     return resp
 
-@app.errorhandler(406)
-def not_acceptable(error=None):
+@app.errorhandler(400)
+def bad_request(error=None):
     message = {
-            'status': 406,
+            'status': 400,
             'message': 'Could not parse json, check formatting: ' + request.url,
     }
     resp = jsonify(message)
-    resp.status_code = 406
-
+    resp.status_code = 400
     return resp
 
 
