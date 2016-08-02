@@ -1,7 +1,11 @@
 from flask import Flask, request, jsonify
+import time
+import datetime
 from sentiment import Sentiment
+from auth import Auth
+from errors import Errors
 
-
+timestamp = time.time()
 app = Flask(__name__)
 
 @app.route('/')
@@ -9,6 +13,7 @@ def hello_world():
     return 'API'
 
 @app.route('/api/sentiment', methods=['GET', 'POST'])
+@Auth.auth_required
 def api():
     if request.method == 'GET':
         return jsonify(text='This is how you should format your POST data.')
@@ -18,32 +23,13 @@ def api():
         except Exception as e:
             # Should log this error maybe?
             print(e)
-            return bad_request()
+            return Errors.bad_request()
         else:
             for text in f:
-                print(f[text])
+                print(datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'))
                 return jsonify(Sentiment.demo_vader_instance(f[text]))
 
 
-@app.errorhandler(404)
-def not_found(error=None):
-    message = {
-            'status': 404,
-            'message': 'Not Found: ' + request.url,
-    }
-    resp = jsonify(message)
-    resp.status_code = 404
-    return resp
-
-@app.errorhandler(400)
-def bad_request(error=None):
-    message = {
-            'status': 400,
-            'message': 'Could not parse json, check formatting: ' + request.url,
-    }
-    resp = jsonify(message)
-    resp.status_code = 400
-    return resp
 
 
 if __name__ == '__main__':
