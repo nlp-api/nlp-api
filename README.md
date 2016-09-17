@@ -1,5 +1,8 @@
 # nlp-api
-Natural Language Processing API
+
+Coming soon `www.nlp-api.org`
+
+Natural Language Processing API. The goal is to allow anyone to use features of pythons [nltk](http://www.nltk.org/) library with any language. Usage will be as simple as spinning up the docker container and sending a POST with JSON formatted data to an endpoint. Eventually we want to have nlp-api running at _www.nlp-api.org_ for anyone to use.
 
 ## Get flask running:
    - clone repo and `cd nlp-api/web/`.
